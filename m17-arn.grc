@@ -11,7 +11,7 @@ options:
     gen_linking: dynamic
     generate_options: qt_gui
     hier_block_src_path: '.:'
-    id: M17_bert
+    id: M17_arn
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -22,7 +22,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: M17_bert
+    title: M17 Amateur Radio Newsline
   states:
     bus_sink: false
     bus_source: false
@@ -103,7 +103,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: ./m17-gnuradio/bert.bin
+    file: ./m17-gnuradio/Report2288.bin
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -145,8 +145,8 @@ blocks:
     alias: ''
     block_tags: 'False'
     comment: ''
-    epsilon: '1.0'
-    freq_offset: '0.0'
+    epsilon: '1.0000'
+    freq_offset: '0.000'
     maxoutbuf: '0'
     minoutbuf: '0'
     noise_voltage: '0'
@@ -156,7 +156,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [496, 556.0]
+    coordinate: [496, 588.0]
     rotation: 0
     state: enabled
 - name: channels_selective_fading_model_0
@@ -173,13 +173,13 @@ blocks:
     mags: (1,0.99,0.97)
     maxoutbuf: '0'
     minoutbuf: '0'
-    ntaps: '12'
+    ntaps: '8'
     seed: '0'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 540.0]
+    coordinate: [144, 684.0]
     rotation: 0
     state: disabled
 - name: digital_chunks_to_symbols_xx_0
@@ -207,7 +207,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    attenuation1: '20.0'
+    attenuation1: '10.0'
     auto_filter: 'True'
     bandwidth: '200000'
     buffer_size: '32768'
@@ -221,7 +221,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [824, 644.0]
+    coordinate: [824, 716.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -301,7 +301,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [824, 520.0]
+    coordinate: [824, 584.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -398,7 +398,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [832, 420.0]
+    coordinate: [824, 460.0]
     rotation: 0
     state: enabled
 - name: root_raised_cosine_filter_0
