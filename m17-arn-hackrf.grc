@@ -93,6 +93,98 @@ blocks:
     coordinate: [288, 76.0]
     rotation: 0
     state: true
+- name: variable_awgn
+  id: variable_qtgui_range
+  parameters:
+    comment: AWGN noise voltage.
+    gui_hint: ''
+    label: AWGN
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '.1'
+    stop: '2.0'
+    value: '0.0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [632, 12.0]
+    rotation: 0
+    state: true
+- name: variable_clock_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: 'Symbol clock frequency
+
+      offset in PPM.'
+    gui_hint: ''
+    label: Clock
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-250'
+    step: '2.5'
+    stop: '250'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [952, 12.0]
+    rotation: 0
+    state: true
+- name: variable_frequency_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: 'Frequency offset expressed
+
+      as a percentage of symbol
+
+      deviation (800Hz).'
+    gui_hint: ''
+    label: Frequency
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-100'
+    step: '1'
+    stop: '100'
+    value: '0.0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [776, 12.0]
+    rotation: 0
+    state: true
+- name: variable_qtgui_toggle_button_msg_0
+  id: variable_qtgui_toggle_button_msg
+  parameters:
+    comment: ''
+    gui_hint: ''
+    initPressed: 'False'
+    label: Fading
+    outputmsgname: fading_selector
+    pressBackgroundColor: default
+    pressFontColor: default
+    pressed: '1'
+    relBackgroundColor: default
+    relFontColor: default
+    released: '0'
+    type: int
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [72, 724.0]
+    rotation: 0
+    state: true
 - name: analog_frequency_modulator_fc_0
   id: analog_frequency_modulator_fc
   parameters:
@@ -116,7 +208,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: Report2288.bin
+    file: Report2328.bin
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -151,32 +243,55 @@ blocks:
     coordinate: [208, 276.0]
     rotation: 0
     state: true
-- name: channels_channel_model_0
+- name: blocks_selector_0
+  id: blocks_selector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    enabled: 'True'
+    input_index: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    num_outputs: '1'
+    output_index: '0'
+    showports: 'False'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 568.0]
+    rotation: 0
+    state: true
+- name: channels_channel_model_0_0
   id: channels_channel_model
   parameters:
     affinity: ''
     alias: ''
     block_tags: 'False'
     comment: ''
-    epsilon: '1.0000'
-    freq_offset: '0.000'
+    epsilon: 1.0 + (variable_clock_offset / 1000000.0)
+    freq_offset: (variable_frequency_offset / symbol_rate) * 0.4
     maxoutbuf: '0'
     minoutbuf: '0'
-    noise_voltage: '0.0'
+    noise_voltage: variable_awgn
     seed: '0'
     taps: 1.0 + 1.0j
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [416, 548.0]
+    coordinate: [616, 588.0]
     rotation: 0
     state: enabled
 - name: channels_selective_fading_model_0
   id: channels_selective_fading_model
   parameters:
     K: '4.0'
-    LOS: 'True'
+    LOS: 'False'
     N: '8'
     affinity: ''
     alias: ''
@@ -192,9 +307,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [96, 532.0]
+    coordinate: [72, 540.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: digital_chunks_to_symbols_xx_0
   id: digital_chunks_to_symbols_xx
   parameters:
@@ -390,7 +505,7 @@ blocks:
     freq7: 100e6
     freq8: 100e6
     freq9: 100e6
-    gain0: '0'
+    gain0: '14'
     gain1: '10'
     gain10: '10'
     gain11: '10'
@@ -554,7 +669,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [680, 572.0]
+    coordinate: [920, 580.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -651,7 +766,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [680, 436.0]
+    coordinate: [920, 476.0]
     rotation: 0
     state: enabled
 - name: rational_resampler_xxx_0
@@ -699,17 +814,19 @@ blocks:
     state: true
 
 connections:
-- [analog_frequency_modulator_fc_0, '0', channels_channel_model_0, '0']
+- [analog_frequency_modulator_fc_0, '0', blocks_selector_0, '0']
 - [analog_frequency_modulator_fc_0, '0', channels_selective_fading_model_0, '0']
 - [blocks_file_source_0, '0', blocks_repack_bits_bb_0, '0']
 - [blocks_repack_bits_bb_0, '0', digital_chunks_to_symbols_xx_0, '0']
-- [channels_channel_model_0, '0', qtgui_freq_sink_x_0, '0']
-- [channels_channel_model_0, '0', qtgui_time_sink_x_0, '0']
-- [channels_channel_model_0, '0', rational_resampler_xxx_0, '0']
-- [channels_selective_fading_model_0, '0', channels_channel_model_0, '0']
+- [blocks_selector_0, '0', channels_channel_model_0_0, '0']
+- [channels_channel_model_0_0, '0', qtgui_freq_sink_x_0, '0']
+- [channels_channel_model_0_0, '0', qtgui_time_sink_x_0, '0']
+- [channels_channel_model_0_0, '0', rational_resampler_xxx_0, '0']
+- [channels_selective_fading_model_0, '0', blocks_selector_0, '1']
 - [digital_chunks_to_symbols_xx_0, '0', root_raised_cosine_filter_0, '0']
 - [rational_resampler_xxx_0, '0', osmosdr_sink_1, '0']
 - [root_raised_cosine_filter_0, '0', analog_frequency_modulator_fc_0, '0']
+- [variable_qtgui_toggle_button_msg_0, state, blocks_selector_0, iindex]
 
 metadata:
   file_format: 1
